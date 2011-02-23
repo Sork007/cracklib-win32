@@ -1,0 +1,7 @@
+Debug/*
+_ReSharper.*
+ipch/*
+*.suo
+*.sdf
+*.user
+*.opensdf
