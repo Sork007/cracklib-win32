@@ -17,11 +17,13 @@
 #define MAXWORDLEN	32
 #define MAXBLOCKLEN 	(MAXWORDLEN * NUMWORDS)
 
+#define IN_CRACKLIB
+
 #ifdef IN_CRACKLIB
 
 #include <stdio.h>
 #include <ctype.h>
-#include <crack.h>
+#include "crack.h"
 
 #if defined(ENABLE_NLS)
 #include <libintl.h>

@@ -7,14 +7,12 @@
 #include <stdio.h>
 
 #define IN_CRACKLIB
-#include "config.h"
-#include "crack.h"
-#include "packer.h"
+//#include "config.h"
+#include "..\lib\crack.h"
+#include "..\lib\packer.h"
 
 int
-main(argc, argv)
-    int argc;
-    char *argv[];
+main_unpacker(int argc, char** argv)
 {
     uint32_t i;
     PWDICT *pwp;

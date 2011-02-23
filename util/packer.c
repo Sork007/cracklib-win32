@@ -8,14 +8,12 @@
 #include <string.h>
 
 #define IN_CRACKLIB
-#include "config.h"
-#include "crack.h"
-#include "packer.h"
+//#include "config.h"
+#include "..\lib\crack.h"
+#include "..\lib\packer.h"
 
 int
-main(argc, argv)
-    int argc;
-    char *argv[];
+main_packer(int argc, char** argv)
 {
     unsigned long readed;
     unsigned long wrote;

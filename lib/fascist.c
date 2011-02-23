@@ -4,11 +4,11 @@
  * or its effect upon hardware or computer systems.
  */
 
-#include "config.h"
+//#include "config.h"
 #include <sys/types.h>
 #include <errno.h>
 #include <limits.h>
-#include <pwd.h>
+//#include <pwd.h>
 #include <stdlib.h>
 #include <string.h>
 #ifdef HAVE_UNISTD_H
@@ -432,9 +432,7 @@ static char *r_constructors[] = {
 };
 
 int
-GTry(rawtext, password)
-    char *rawtext;
-    char *password;
+GTry(char* rawtext, char* password)
 {
     int i;
     int len;
@@ -491,220 +489,19 @@ GTry(rawtext, password)
     return (0);
 }
 
-char *
-FascistGecos(password, uid)
-    char *password;
-    int uid;
+struct passwd
 {
-    int i;
-    int j;
-    int wc;
-    char *ptr;
-    int gwords;
-    struct passwd *pwp, passwd;
-    char gbuffer[STRINGSIZE];
-    char tbuffer[STRINGSIZE];
-    char *sbuffer = NULL;
-#ifdef HAVE_GETPWUID_R
-    size_t sbufferlen = LINE_MAX;
-#endif
-    char *uwords[STRINGSIZE];
-    char longbuffer[STRINGSIZE * 2];
-
-#ifdef HAVE_GETPWUID_R
-    sbuffer = malloc(sbufferlen);
-    if (sbuffer == NULL)
-    {
-        return ("memory allocation error");
-    }
-    while ((i = getpwuid_r(uid, &passwd, sbuffer, sbufferlen, &pwp)) != 0)
-    {
-        if (i == ERANGE)
-        {
-            free(sbuffer);
-
-	    sbufferlen += LINE_MAX;
-            sbuffer = malloc(sbufferlen);
-
-            if (sbuffer == NULL)
-            {
-                return ("memory allocation error");
-            }
-        } else {
-            pwp = NULL;
-            break;
-        }
-    }
-#else
-    /* Non-reentrant, but no choice since no _r routine */
-    pwp = getpwuid(uid);
-#endif
-
-    if (pwp == NULL)
-    {
-	if (sbuffer)
-	{
-		free(sbuffer);
-		sbuffer = NULL;
-	}
-	return _("you are not registered in the password file");
-    }
-
-    /* lets get really paranoid and assume a dangerously long gecos entry */
-
-    strncpy(tbuffer, pwp->pw_name, STRINGSIZE);
-    tbuffer[STRINGSIZE-1] = '\0';
-    if (GTry(tbuffer, password))
-    {
-	if (sbuffer)
-	{
-		free(sbuffer);
-		sbuffer = NULL;
-	}
-	return _("it is based on your username");
-    }
-
-    /* it never used to be that you got passwd strings > 1024 chars, but now... */
-
-    strncpy(tbuffer, pwp->pw_gecos, STRINGSIZE);
-    tbuffer[STRINGSIZE-1] = '\0';
-    strcpy(gbuffer, Lowercase(tbuffer));
-
-    wc = 0;
-    ptr = gbuffer;
-    gwords = 0;
-    uwords[0] = (char *)0;
-
-    while (*ptr)
-    {
-	while (*ptr && ISSKIP(*ptr))
-	{
-	    ptr++;
-	}
-
-	if (ptr != gbuffer)
-	{
-	    ptr[-1] = '\0';
-	}
-
-	gwords++;
-	uwords[wc++] = ptr;
-
-	if (wc == STRINGSIZE)
-	{
-	    uwords[--wc] = (char *) 0;  /* to hell with it */
-	    break;
-	} else
-	{
-	    uwords[wc] = (char *) 0;
-	}
-
-	while (*ptr && !ISSKIP(*ptr))
-	{
-	    ptr++;
-	}
-
-	if (*ptr)
-	{
-	    *(ptr++) = '\0';
-	}
-    }
-
-#ifdef DEBUG
-    for (i = 0; uwords[i]; i++)
-    {
-	printf("gecosword %s\n", uwords[i]);
-    }
-#endif
-
-    for (i = 0; uwords[i]; i++)
-    {
-	if (GTry(uwords[i], password))
-	{
-	    if (sbuffer)
-	    {
-	    	free(sbuffer);
-		sbuffer = NULL;
-	    }
-	    return _("it is based upon your password entry");
-	}
-    }
-
-    /* since uwords are taken from gbuffer, no uword can be longer than gbuffer */
-
-    for (j = 1; (j < gwords) && uwords[j]; j++)
-    {
-	for (i = 0; i < j; i++)
-	{
-	    strcpy(longbuffer, uwords[i]);
-	    strcat(longbuffer, uwords[j]);
-
-	    if (GTry(longbuffer, password))
-	    {
-	        if (sbuffer)
-	        {
-	       	    free(sbuffer);
-		    sbuffer = NULL;
-	        }
-		return _("it is derived from your password entry");
-	    }
-
-	    strcpy(longbuffer, uwords[j]);
-	    strcat(longbuffer, uwords[i]);
-
-	    if (GTry(longbuffer, password))
-	    {
-	        if (sbuffer)
-	        {
-	       	    free(sbuffer);
-		    sbuffer = NULL;
-	        }
-		return _("it's derived from your password entry");
-	    }
-
-	    longbuffer[0] = uwords[i][0];
-	    longbuffer[1] = '\0';
-	    strcat(longbuffer, uwords[j]);
-
-	    if (GTry(longbuffer, password))
-	    {
-	        if (sbuffer)
-	        {
-	       	    free(sbuffer);
-		    sbuffer = NULL;
-	        }
-		return _("it is derivable from your password entry");
-	    }
-
-	    longbuffer[0] = uwords[j][0];
-	    longbuffer[1] = '\0';
-	    strcat(longbuffer, uwords[i]);
-
-	    if (GTry(longbuffer, password))
-	    {
-	        if (sbuffer)
-	        {
-	       	    free(sbuffer);
-		    sbuffer = NULL;
-	        }
-		return _("it's derivable from your password entry");
-	    }
-	}
-    }
-
-    if (sbuffer)
-    {
-        free(sbuffer);
-        sbuffer = NULL;
-    }
-
-    return ((char *) 0);
-}
+  /*	...		*/
+  /*    missing stuff	*/
+  /*	...		*/
+  char *pw_name;		/* login user id		*/
+  char *pw_dir;			/* home directory		*/
+  char *pw_shell;		/* login shell			*/
+  int  pw_uid;
+};
 
 char *
-FascistLook(pwp, instring)
-    PWDICT *pwp;
-    char *instring;
+FascistLook(PWDICT * pwp, char* instring)
 {
     int i,maxrepeat;
     char *ptr;
@@ -784,11 +581,6 @@ FascistLook(pwp, instring)
     if (PMatch("aadddddda", password))  /* smirk */
     {
 	return _("it looks like a National Insurance number.");
-    }
-
-    if ((ptr = FascistGecos(password, getuid())))
-    {
-	return (ptr);
     }
 
     /* it should be safe to use Mangle with its reliance on STRINGSIZE

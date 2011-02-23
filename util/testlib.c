@@ -5,15 +5,15 @@
  */
 
 #include <stdio.h>
-#include "config.h"
-#include "crack.h"
+//#include "config.h"
+#include "..\lib\crack.h"
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
-#include "packer.h"
+#include "..\lib\packer.h"
 
 int
-main ()
+main_testlib ()
 {
     char buffer[1024];
 

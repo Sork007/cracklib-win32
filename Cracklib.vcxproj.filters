@@ -27,9 +27,6 @@
     <ClCompile Include="lib\stringlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="python\_cracklibmodule.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="util\check.c">
       <Filter>Source Files</Filter>
     </ClCompile>

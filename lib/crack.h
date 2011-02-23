@@ -24,3 +24,5 @@ extern const char *GetDefaultCracklibDict(void);
 #endif
 
 #endif
+
+#define DEFAULT_CRACKLIB_DICT "pw_dict"

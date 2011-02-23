@@ -5,9 +5,9 @@
  */
 
 #define IN_CRACKLIB
-#include "config.h"
-#include "crack.h"
-#include "packer.h"
+//#include "config.h"
+#include "..\lib\crack.h"
+#include "..\lib\packer.h"
 
 int
 main ()

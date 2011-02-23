@@ -10,12 +10,13 @@
 #include <locale.h>
 
 #define IN_CRACKLIB
-#include "config.h"
-#include "crack.h"
-#include "packer.h"
+//#include "config.h"
+#include "..\lib\crack.h"
+#include "..\lib\packer.h"
+#define LINE_MAX 2048
 
 int
-main(int argc, char **argv)
+main_check(int argc, char **argv)
 {
 	char buf[LINE_MAX];
 	const char *why;

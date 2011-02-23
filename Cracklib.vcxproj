@@ -72,7 +72,6 @@
     <ClCompile Include="lib\packlib.c" />
     <ClCompile Include="lib\rules.c" />
     <ClCompile Include="lib\stringlib.c" />
-    <ClCompile Include="python\_cracklibmodule.c" />
     <ClCompile Include="util\check.c" />
     <ClCompile Include="util\packer.c" />
     <ClCompile Include="util\testlib.c" />

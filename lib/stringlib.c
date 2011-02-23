@@ -4,7 +4,7 @@
  * or its effect upon hardware or computer systems.
  */
 
-#include "config.h"
+//#include "config.h"
 #include <string.h>
 #include <stdlib.h>
 #ifdef HAVE_INTTYPES_H
@@ -15,8 +15,7 @@
 static const char vers_id[] = "stringlib.c : v2.3p2 Alec Muffett 18 May 1993";
 
 char
-Chop(string)
-    register char *string;
+Chop(char* string)
 {
     register char c;
     register char *ptr;

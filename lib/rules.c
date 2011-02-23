@@ -6,7 +6,7 @@
 
 static const char vers_id[] = "rules.c : v5.0p3 Alec Muffett 20 May 1993";
 
-#include "config.h"
+//#include "config.h"
 #include <string.h>
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
@@ -27,10 +27,7 @@ Debug(val, a, b, c, d, e, f, g)
     fprintf(stderr, a, b, c, d, e, f, g);
 }
 #else
-static void
-Debug(val, a, b, c, d, e, f, g)
-    int val;
-    char *a, *b, *c, *d, *e, *f, *g;
+static void Debug(int val, char* a, ...)
 {
 }
 #endif
@@ -63,9 +60,7 @@ Debug(val, a, b, c, d, e, f, g)
 #define RULE_MLAST	')'
 
 int
-Suffix(myword, suffix)
-    char *myword;
-    char *suffix;
+Suffix(char* myword, char* suffix)
 {
     register int i;
     register int j;
@@ -82,8 +77,7 @@ Suffix(myword, suffix)
 }
 
 char *
-Reverse(str)			/* return a pointer to a reversal */
-    register char *str;
+Reverse(char* str)			/* return a pointer to a reversal */
 {
     register int i;
     register int j;
@@ -98,8 +92,7 @@ Reverse(str)			/* return a pointer to a reversal */
 }
 
 char *
-Uppercase(str)			/* return a pointer to an uppercase */
-    register char *str;
+Uppercase(char* str)			/* return a pointer to an uppercase */
 {
     register char *ptr;
     static char area[STRINGSIZE];
@@ -115,8 +108,7 @@ Uppercase(str)			/* return a pointer to an uppercase */
 }
 
 char *
-Lowercase(str)			/* return a pointer to an lowercase */
-    register char *str;
+Lowercase(char* str)			/* return a pointer to an lowercase */
 {
     register char *ptr;
     static char area[STRINGSIZE];
@@ -132,8 +124,7 @@ Lowercase(str)			/* return a pointer to an lowercase */
 }
 
 char *
-Capitalise(str)			/* return a pointer to an capitalised */
-    register char *str;
+Capitalise(char* str)			/* return a pointer to an capitalised */
 {
     register char *ptr;
     static char area[STRINGSIZE];
@@ -151,8 +142,7 @@ Capitalise(str)			/* return a pointer to an capitalised */
 }
 
 char *
-Pluralise(string)		/* returns a pointer to a plural */
-    register char *string;
+Pluralise(char* string)		/* returns a pointer to a plural */
 {
     register int length;
     static char area[STRINGSIZE];
@@ -192,17 +182,14 @@ Pluralise(string)		/* returns a pointer to a plural */
 }
 
 char *
-Substitute(string, old, new)	/* returns pointer to a swapped about copy */
-    register char *string;
-    register char old;
-    register char new;
+Substitute(char* string, char old, char n)	/* returns pointer to a swapped about copy */
 {
     register char *ptr;
     static char area[STRINGSIZE];
     ptr = area;
     while (*string)
     {
-	*(ptr++) = (*string == old ? new : *string);
+	*(ptr++) = (*string == old ? n : *string);
 	string++;
     }
     *ptr = '\0';
@@ -210,9 +197,7 @@ Substitute(string, old, new)	/* returns pointer to a swapped about copy */
 }
 
 char *
-Purge(string, target)		/* returns pointer to a purged copy */
-    register char *string;
-    register char target;
+Purge(char* string, char target)		/* returns pointer to a purged copy */
 {
     register char *ptr;
     static char area[STRINGSIZE];
@@ -237,15 +222,13 @@ Purge(string, target)		/* returns pointer to a purged copy */
  */
 
 int
-MatchClass(class, input)
-    register char class;
-    register char input;
+MatchClass(char clazz, char input)
 {
     register char c;
     register int retval;
     retval = 0;
 
-    switch (class)
+    switch (clazz)
     {
 	/* ESCAPE */
 
@@ -343,12 +326,12 @@ MatchClass(class, input)
 	break;
 
     default:
-	Debug(1, "MatchClass: unknown class %c\n", class);
+	Debug(1, "MatchClass: unknown class %c\n", clazz);
 	return (0);
 	break;
     }
 
-    if (isupper(class))
+    if (isupper(clazz))
     {
 	return (!retval);
     }
@@ -356,13 +339,11 @@ MatchClass(class, input)
 }
 
 char *
-PolyStrchr(string, class)
-    register char *string;
-    register char class;
+PolyStrchr(char* string, char clazz)
 {
     while (*string)
     {
-	if (MatchClass(class, *string))
+	if (MatchClass(clazz, *string))
 	{
 	    return (string);
 	}
@@ -372,17 +353,14 @@ PolyStrchr(string, class)
 }
 
 char *
-PolySubst(string, class, new)	/* returns pointer to a swapped about copy */
-    register char *string;
-    register char class;
-    register char new;
+PolySubst(char* string, char clazz, char n)	/* returns pointer to a swapped about copy */
 {
     register char *ptr;
     static char area[STRINGSIZE];
     ptr = area;
     while (*string)
     {
-	*(ptr++) = (MatchClass(class, *string) ? new : *string);
+	*(ptr++) = (MatchClass(clazz, *string) ? n : *string);
 	string++;
     }
     *ptr = '\0';
@@ -390,16 +368,14 @@ PolySubst(string, class, new)	/* returns pointer to a swapped about copy */
 }
 
 char *
-PolyPurge(string, class)	/* returns pointer to a purged copy */
-    register char *string;
-    register char class;
+PolyPurge(char* string, char clazz)	/* returns pointer to a purged copy */
 {
     register char *ptr;
     static char area[STRINGSIZE];
     ptr = area;
     while (*string)
     {
-	if (!MatchClass(class, *string))
+	if (!MatchClass(clazz, *string))
 	{
 	    *(ptr++) = *string;
 	}
@@ -411,8 +387,7 @@ PolyPurge(string, class)	/* returns pointer to a purged copy */
 /* -------- BACK TO NORMALITY -------- */
 
 int
-Char2Int(character)
-    char character;
+Char2Int(char character)
 {
     if (isdigit(character))
     {
@@ -428,9 +403,7 @@ Char2Int(character)
 }
 
 char *
-Mangle(input, control)		/* returns a pointer to a controlled Mangle */
-    char *input;
-    char *control;
+Mangle(char* input, char* control)		/* returns a pointer to a controlled Mangle */
 {
     int limit;
     register char *ptr;

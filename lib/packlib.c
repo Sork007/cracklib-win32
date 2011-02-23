@@ -4,9 +4,11 @@
  * or its effect upon hardware or computer systems.
  */
 
-#include "config.h"
+//#include "config.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+
 #ifdef HAVE_ZLIB_H
 #include <zlib.h>
 #endif
@@ -17,12 +19,18 @@
 #include <stdint.h>
 #endif
 #include "packer.h"
+#include <stdio.h>
+
+#define snprintf sprintf_s
 
 static const char vers_id[] = "packlib.c : v2.3p2 Alec Muffett 18 May 1993";
 
 #define DEBUG 0
 
 /* Structures for processing "broken" 64bit dictionary files */
+
+#define uint64_t unsigned long
+#define uint16_t unsigned short
 
 struct pi_header64
 {
@@ -61,9 +69,7 @@ _PWIsBroken64(FILE *ifp)
 
 
 PWDICT *
-PWOpen(prefix, mode)
-    const char *prefix;
-    char *mode;
+PWOpen(const char* prefix, char* mode)
 {
     int use64 = 0;
     static PWDICT pdesc;
@@ -311,8 +317,7 @@ PWOpen(prefix, mode)
 }
 
 int
-PWClose(pwp)
-    PWDICT *pwp;
+PWClose(PWDICT * pwp)
 {
     if (pwp->header.pih_magic != PIH_MAGIC)
     {
@@ -372,9 +377,7 @@ PWClose(pwp)
 }
 
 int
-PutPW(pwp, string)
-    PWDICT *pwp;
-    char *string;
+PutPW(PWDICT *pwp, char *string)
 {
     if (!(pwp->flags & PFOR_WRITE))
     {
@@ -435,9 +438,7 @@ PutPW(pwp, string)
 }
 
 char *
-GetPW(pwp, number)
-    PWDICT *pwp;
-    uint32_t number;
+GetPW(PWDICT *pwp, uint32_t number)
 {
     uint32_t datum;
     register int i;
@@ -448,6 +449,7 @@ GetPW(pwp, number)
     static char data[NUMWORDS][MAXWORDLEN];
     static uint32_t prevblock = 0xffffffff;
     uint32_t thisblock;
+	int r = 1;
 
     thisblock = number / NUMWORDS;
 
@@ -488,7 +490,6 @@ GetPW(pwp, number)
        }
     }
 
-	int r = 1;
 #ifdef HAVE_ZLIB_H
 	if (pwp->flags & PFOR_USEZLIB)
 	{
