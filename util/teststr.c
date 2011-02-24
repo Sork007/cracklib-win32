@@ -10,7 +10,7 @@
 #include "..\lib\packer.h"
 
 int
-main ()
+main_teststr ()
 {
     PWDICT *pwp;
     char buffer[STRINGSIZE];

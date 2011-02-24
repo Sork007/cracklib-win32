@@ -16,7 +16,7 @@
 #define LINE_MAX 2048
 
 int
-main_check(int argc, char **argv)
+main(int argc, char **argv)
 {
 	char buf[LINE_MAX];
 	const char *why;
